@@ -15,6 +15,7 @@ from src.matcher import MatcherEngine
 from src.reconstruct import Reconstructor
 from src.wipe import YTMusicWiper
 from src.utils import generate_reports
+from src.setup import SetupWizard
 
 # Configure Rich Logging
 logging.basicConfig(
@@ -42,6 +43,7 @@ BANNER = """
 ║  7. Wipe YT Music playlists                      ║
 ║  8. Reset database (fresh start)                 ║
 ║  9. Re-authenticate Spotify                      ║
+║  10. API Setup Wizard (First time setup)         ║
 ║  0. Exit                                         ║
 ║                                                  ║
 ╚══════════════════════════════════════════════════╝
@@ -273,6 +275,11 @@ def do_reauth_spotify():
 
 def main():
     """Interactive menu-driven main loop."""
+    # Check credentials on startup
+    wizard = SetupWizard()
+    if not wizard._check_spotify_creds() or not wizard._check_ytmusic_creds():
+        wizard.run()
+
     db = Database()
 
     console.print(BANNER, style="bold")
@@ -299,6 +306,8 @@ def main():
                 do_reset(db)
             elif choice == '9':
                 do_reauth_spotify()
+            elif choice == '10':
+                SetupWizard().run()
             elif choice == '0':
                 console.print("[bold]Goodbye! 👋[/bold]")
                 db.close()

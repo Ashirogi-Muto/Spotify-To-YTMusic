@@ -9,33 +9,28 @@ This project provides a robust, interactive command-line pipeline to migrate you
 - **Resilient Pipeline**: Uses a local SQLite database to cache progress. If the extraction or matching fails or is interrupted, you can resume exactly where you left off.
 - **Reporting**: Generates detailed `matched.json`, `unmatched.json`, and `summary.txt` reports in the `output/` directory.
 
-## Prerequisites
+## Setup & Installation
 
-1. Set up your `.env` file in the root directory:
-   ```env
-   SPOTIPY_CLIENT_ID=your_spotify_client_id
-   SPOTIPY_CLIENT_SECRET=your_spotify_client_secret
-   SPOTIPY_REDIRECT_URI=http://127.0.0.1:8080/callback/
-   ```
-
-2. Create a virtual environment and install dependencies:
+1. Create a virtual environment and install dependencies:
    ```bash
    python3 -m venv venv
    source venv/bin/activate
    pip install -r requirements.txt
    ```
 
-3. Generate your YouTube Music `headers_auth.json` (see ytmusicapi documentation for header extraction).
+2. **Run the tool**:
+   ```bash
+   python3 main.py
+   ```
+
+**That's it!** On your very first run, the interactive **Setup Wizard** will automatically launch and guide you step-by-step through:
+1. Creating a free Spotify Developer app and saving your `Client ID` and `Client Secret`.
+2. Logging into Spotify to authorize the script.
+3. Capturing your YouTube Music authentication headers so the script can manage your playlists.
 
 ## Usage
 
-Simply run the main interactive script:
-
-```bash
-python3 main.py
-```
-
-### Menu Options
+Once setup is complete, `main.py` presents an interactive menu:
 
 1. **Extract from Spotify**: Pulls your Liked Songs and Playlists into the local database.
 2. **Match tracks to YT Music**: Queries YouTube Music to find semantic matches for all extracted tracks.
